@@ -1,4 +1,4 @@
-package com.example.demo.model.TicketPool;
+package com.example.demo.model.ticketPool;
 
 import java.util.ArrayList;
 import java.util.Collections;

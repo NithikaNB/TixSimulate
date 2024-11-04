@@ -1,10 +1,10 @@
 package com.example.demo;
 
 import com.example.demo.config.Configuration;
-import com.example.demo.model.Customer.Customer;
-import com.example.demo.model.Vendor.Vendor;
-import com.example.demo.service.CustomerService;
-import com.example.demo.service.VendorService;
+import com.example.demo.model.customer.CustomerX;
+import com.example.demo.model.vendor.Vendor;
+import com.example.demo.service.customerService.CustomerService;
+import com.example.demo.service.vendorService.VendorService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -30,8 +30,8 @@ public class DemoApplication {
 		new Thread(vendor2).start();
 
 		// Create and start customer threads
-		Customer customer1 = new Customer(1, 1000, 5, 1, customerService);
-		Customer customer2 = new Customer(2, 1500, 5, 1, customerService);
+		CustomerX customer1 = new CustomerX(1, 1000, 5, 1, customerService);
+		CustomerX customer2 = new CustomerX(2, 1500, 5, 1, customerService);
 		new Thread(customer1).start();
 		new Thread(customer2).start();
 	}

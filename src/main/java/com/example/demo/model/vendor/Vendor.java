@@ -1,6 +1,6 @@
-package com.example.demo.model.Vendor;
+package com.example.demo.model.vendor;
 
-import com.example.demo.service.VendorService;
+import com.example.demo.service.vendorService.VendorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
