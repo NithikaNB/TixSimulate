@@ -1,58 +1,63 @@
 package com.example.demo.model.ticketPool;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class TicketPool {
+    private final List<Integer> tickets = Collections.synchronizedList(new ArrayList<>()); // Thread-safe list
     private static final Logger logger = Logger.getLogger(TicketPool.class.getName());
 
-    private final List<Integer> tickets;
-    private final int maxCapacity;
 
-    public TicketPool(int maxCapacity) {
-        this.tickets = Collections.synchronizedList(new ArrayList<>());
-        this.maxCapacity = maxCapacity;
+    public TicketPool(int ticketCount) {
+        addTicket(ticketCount);
+        logger.info("TicketPool Constructor has been initiated");
     }
 
-    // Synchronized method for vendors to add tickets to the pool
-    public synchronized void addTickets(int ticketsToAdd) {
-        while (tickets.size() + ticketsToAdd > maxCapacity) {
-            logger.info("Cannot add tickets: Exceeds maximum capacity. Vendor is waiting...");
-            try {
-                wait(); // Wait until there's space in the pool
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                logger.log(Level.SEVERE, "Vendor thread interrupted while waiting", e);
-                return;
+    // Synchronized method for adding a ticket to the pool
+    public synchronized void addTicket(int ticketCount) {
+        for (int i =0; i < ticketCount ; i++) {
+            tickets.add(1);
+        }
+        String message = ticketCount + " tickets have been added to the ticketPool";
+        logger.info(message);
+    }
+    public synchronized List<Integer> getTickets(){
+        return tickets;
+    }
+    public synchronized void removeTickets(int ticketCount){
+        if (ticketCount <= tickets.size()) {
+            for (int i = 0; i < ticketCount; i++) {
+                tickets.remove(0);
             }
+
+            String message = ticketCount + " tickets have been removed from the ticketPool";
+            logger.info(message);
+        }else{
+            System.out.println("TicketCount Exceed.");
+            logger.info("Requested number of tickets exceed the existing number of tickets");
+
         }
-        for (int i = 0; i < ticketsToAdd; i++) {
-            tickets.add(1); // Add each ticket
-        }
-        logger.info("Added " + ticketsToAdd + " tickets. Current pool size: " + tickets.size());
-        notifyAll(); // Notify waiting customer threads that tickets are available
+
+
     }
 
-    // Synchronized method for customers to remove a ticket from the pool
-    public synchronized boolean removeTicket(int customerRetrievalRate) {
-        while (tickets.size() < customerRetrievalRate) {
-            logger.info("Not enough tickets available. Customer waiting for tickets...");
-            try {
-                wait(); // Wait for tickets to be added if there aren’t enough
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                logger.log(Level.SEVERE, "Customer thread interrupted while waiting", e);
-                return false;
-            }
-        }
-        for (int i = 0; i < customerRetrievalRate; i++) {
-            tickets.remove(0); // Remove one ticket at a time
-        }
-        logger.info("Customer purchased " + customerRetrievalRate + " tickets. Remaining tickets: " + tickets.size());
-        notifyAll(); // Notify vendors if space is now available
-        return true;
+    public synchronized int getAvailableTickets(){
+        return tickets.size();
     }
+
+    public synchronized boolean isRequiredTicketsWithinCapacity (int requiredTickets){
+        if (requiredTickets <= tickets.size()){
+            return true;
+        }else {
+            return false;        }
+
+    }
+
+
 }

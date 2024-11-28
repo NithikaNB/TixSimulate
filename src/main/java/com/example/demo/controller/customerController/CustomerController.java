@@ -1,4 +1,9 @@
 package com.example.demo.controller.customerController;
 
-public class CustomerController {
+import com.example.demo.model.customer.Customer;
+import org.springframework.http.ResponseEntity;
+
+public interface CustomerController {
+    ResponseEntity<String> createCustomer(Customer customer);
+    ResponseEntity<String> startCustomerTask(Long customerId);
 }
