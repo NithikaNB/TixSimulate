@@ -1,5 +1,7 @@
 package com.example.demo.controller.customerController;
 
+import com.example.demo.dto.response.CommonResponse;
+import com.example.demo.dto.response.ResponseConstants;
 import com.example.demo.model.customer.Customer;
 import com.example.demo.service.customerService.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +19,16 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createCustomer(@RequestBody Customer customer){
+    public CommonResponse createCustomer(@RequestBody Customer customer){
         customerService.createCustomer(customer);
-        return ResponseEntity.ok("Customer " + customer.getCustomerName() + " created successfully!");
-
+        String message = "Customer " + customer.getCustomerName() + " created successfully!";
+        return new CommonResponse(ResponseConstants.SUCCESS, message);
     }
 
-        @PostMapping("/{customerId}/start-task")
-        public ResponseEntity<String> startCustomerTask(@PathVariable Long customerId){
-            customerService.executeTask(customerId);
-            return ResponseEntity.ok("Customer task started successfully!");
-        }
+    @PostMapping("/{customerId}/start-task")
+    public CommonResponse startCustomerTask(@PathVariable Long customerId) {
+        customerService.executeTask(customerId);
+        String message = "Customer task started successfully!";
+        return new CommonResponse(ResponseConstants.SUCCESS, message);
+    }
 }

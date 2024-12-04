@@ -1,9 +1,10 @@
 package com.example.demo.controller.customerController;
 
+import com.example.demo.dto.response.CommonResponse;
 import com.example.demo.model.customer.Customer;
 import org.springframework.http.ResponseEntity;
 
 public interface CustomerController {
-    ResponseEntity<String> createCustomer(Customer customer);
-    ResponseEntity<String> startCustomerTask(Long customerId);
+    CommonResponse createCustomer(Customer customer);
+    CommonResponse startCustomerTask(Long customerId);
 }

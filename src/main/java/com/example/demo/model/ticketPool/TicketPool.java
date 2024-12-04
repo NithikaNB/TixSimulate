@@ -1,63 +1,60 @@
 package com.example.demo.model.ticketPool;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
-
+@Data
+@Entity
+@NoArgsConstructor
 public class TicketPool {
-    private final List<Integer> tickets = Collections.synchronizedList(new ArrayList<>()); // Thread-safe list
-    private static final Logger logger = Logger.getLogger(TicketPool.class.getName());
+
+    //Attributes
+    @Id //Auto generate an unique id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long ticketPoolId;
+
+    private String ticketPoolName;
+
+    @Transient //Exclude from persistence; manage the tickets in memory
+    private final Queue<Integer> availableTickets = new ConcurrentLinkedDeque<>(); // Thread-safe
+
+    // Constructors
 
 
-    public TicketPool(int ticketCount) {
-        addTicket(ticketCount);
-        logger.info("TicketPool Constructor has been initiated");
+    public TicketPool(String ticketPoolName, int ticketCount) {
+        this.ticketPoolName = ticketPoolName;
+        addTickets(ticketCount);
     }
 
-    // Synchronized method for adding a ticket to the pool
-    public synchronized void addTicket(int ticketCount) {
-        for (int i =0; i < ticketCount ; i++) {
-            tickets.add(1);
+    // Method for adding a ticket to the ticket pool
+    public void addTickets(int ticketCount){
+        for (int i = 0; i < ticketCount; i++){
+            availableTickets.add(1);
         }
-        String message = ticketCount + " tickets have been added to the ticketPool";
-        logger.info(message);
     }
-    public synchronized List<Integer> getTickets(){
-        return tickets;
-    }
-    public synchronized void removeTickets(int ticketCount){
-        if (ticketCount <= tickets.size()) {
+
+    // Method for removing a ticket from the ticket pool
+    public boolean removeTickets(int ticketCount){
+        if (ticketCount <= availableTickets.size()) {
             for (int i = 0; i < ticketCount; i++) {
-                tickets.remove(0);
+                availableTickets.poll(); // Remove the head of the queue
             }
-
-            String message = ticketCount + " tickets have been removed from the ticketPool";
-            logger.info(message);
-        }else{
-            System.out.println("TicketCount Exceed.");
-            logger.info("Requested number of tickets exceed the existing number of tickets");
-
-        }
-
-
-    }
-
-    public synchronized int getAvailableTickets(){
-        return tickets.size();
-    }
-
-    public synchronized boolean isRequiredTicketsWithinCapacity (int requiredTickets){
-        if (requiredTickets <= tickets.size()){
             return true;
-        }else {
-            return false;        }
-
+        } else {
+            return true;
+        }
     }
 
+    // Method to get the availableTickets
+    public int getAvailableTickets(){
+        return availableTickets.size();
+    }
 
 }
