@@ -2,12 +2,15 @@ package com.example.demo.service.customerService;
 
 import com.example.demo.model.customer.Customer;
 import com.example.demo.model.ticketPool.TicketPool;
+import com.example.demo.model.vendor.Vendor;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,7 +18,7 @@ import java.util.concurrent.Executors;
 public class CustomerServiceImpl implements CustomerService{
     private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
-//    private final CustomerRepository customerRepository;
+    private final Map<Long, Customer> customerMap = new ConcurrentHashMap<>();
 
     // Creates a fixed thread pool with 10 threads to handle concurrent tasks efficiently.
     // The ExecutorService manages the lifecycle of the threads and executes tasks asynchronously.
@@ -29,14 +32,29 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public void createCustomer(Customer customer1){
-        Customer customer = new Customer();
-        customer.setCustomerName(customer1.getCustomerName());
-        customer.setRetrievalInterval(customer1.getRetrievalInterval());
-        customer.setTicketsRequested(customer1.getTicketsRequested());
-        customer.setTicketsPurchased(customer1.getTicketsPurchased());
-        logger.info("Customer " + customer.getCustomerName() + " has been created!");
-//        System.out.println("Customer " + customer.getCustomerName() + " has been created!");
+    public void createCustomer(Customer customer){
+        // Validate that retrievalInterval is greater than zero
+        if (customer.getRetrievalInterval() <= 0) {
+            throw new IllegalArgumentException("Retrieval interval must be greater than zero.");
+        }
+
+        // Validate that ticketsRequested is greater than zero
+        if (customer.getTicketsRequested() <= 0) {
+            throw new IllegalArgumentException("Tickets requested must be greater than zero.");
+        }
+
+        // Validate that ticketsPurchased is not negative
+        if (customer.getTicketsPurchased() < 0) {
+            throw new IllegalArgumentException("Tickets purchased cannot be negative.");
+        }
+
+        // Assign a unique customer ID (if using an auto-generated ID, ensure it's set)
+        long customerId = customer.getCustomerId();
+        // Save the customer in a data structure (e.g., hashmap or database)
+        customerMap.put(customerId, customer);
+
+        logger.info("Customer created: " + customer.getCustomerName() + " with ID: " + customer.getCustomerId());
+
     }
 
     @Override
