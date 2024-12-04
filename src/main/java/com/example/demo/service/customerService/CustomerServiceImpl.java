@@ -4,6 +4,7 @@ import com.example.demo.model.customer.Customer;
 import com.example.demo.model.ticketPool.TicketPool;
 import com.example.demo.model.vendor.Vendor;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
+import com.example.demo.service.vendorService.VendorTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,33 +58,49 @@ public class CustomerServiceImpl implements CustomerService{
 
     }
 
+//    @Override
+//    public void startCustomerTask(Long customerId) {
+//        try {
+//            // Create a Customer object
+//            Customer customer1 = new Customer("Customer1", 10, 5, 0, true);
+//            logger.info("Customer object created: " + customer1.getCustomerName());
+//
+//            // Create a Ticket Pool using the Service Class
+//            String ticketPoolName = "Movie";  // Name of the ticket pool
+//            int ticketCount = 100;           // Total tickets available
+//            ticketPoolService.createTicketPool(ticketPoolName, ticketCount);
+//            logger.info("Ticket pool created: " + ticketPoolName + " with " + ticketCount + " tickets");
+//
+//            // Retrieve the Ticket Pool object
+//            TicketPool ticketPool = ticketPoolService.getTicketPoolByName(ticketPoolName);
+//
+//            // Create a CustomerTask and submit it for execution
+//            CustomerTask customerTask = new CustomerTask(customer1, ticketPool, ticketPoolService);
+//            logger.info("CustomerTask object created for execution");
+//            executorService.submit(customerTask);
+//            logger.info("Task submitted for execution...");
+//        } catch (Exception e) {
+//            // Handle and log any exceptions
+//            String message = "Error occurred: " + e.getMessage();
+//            System.out.println(message);
+//            logger.error(message);
+//        }
+//    }
+
+
     @Override
-    public void startCustomerTask(Long customerId) {
-        try {
-            // Create a Customer object
-            Customer customer1 = new Customer("Customer1", 10, 5, 0, true);
-            logger.info("Customer object created: " + customer1.getCustomerName());
+    public void startCustomerTask(Long customerId, TicketPool ticketPool) {
+        // Get the customer object stored inside the hashmap
+        Customer customer = customerMap.get(customerId);
 
-            // Create a Ticket Pool using the Service Class
-            String ticketPoolName = "Movie";  // Name of the ticket pool
-            int ticketCount = 100;           // Total tickets available
-            ticketPoolService.createTicketPool(ticketPoolName, ticketCount);
-            logger.info("Ticket pool created: " + ticketPoolName + " with " + ticketCount + " tickets");
-
-            // Retrieve the Ticket Pool object
-            TicketPool ticketPool = ticketPoolService.getTicketPoolByName(ticketPoolName);
-
-            // Create a CustomerTask and submit it for execution
-            CustomerTask customerTask = new CustomerTask(customer1, ticketPool, ticketPoolService);
-            logger.info("CustomerTask object created for execution");
-            executorService.submit(customerTask);
-            logger.info("Task submitted for execution...");
-        } catch (Exception e) {
-            // Handle and log any exceptions
-            String message = "Error occurred: " + e.getMessage();
-            System.out.println(message);
-            logger.error(message);
+        // Check whether there exists a customer object according to the provided customerId
+        if (customer == null){
+            throw new IllegalArgumentException("Customer not found for ID: " + customerId);
         }
-    }
 
+        // Pass customer, ticketPool, ticketPoolService objects into CustomerTask and create a customerTask object
+        CustomerTask customerTask = new CustomerTask(customer, ticketPool, ticketPoolService);
+        executorService.submit(customerTask);
+        logger.info("Customer task started for customer ID: " + customerId);
+    }
 }
