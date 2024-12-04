@@ -1,8 +1,7 @@
 package com.example.demo.service.vendorService;
 
-import java.util.logging.Logger;
+public interface VendorService {
 
-public class VendorService {
-
-
+    void createVendor (String vendorName, int releaseInterval, int ticketPerRelease);
+    void startTask (Long vendorId);
 }

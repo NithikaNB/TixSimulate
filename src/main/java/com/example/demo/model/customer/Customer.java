@@ -8,7 +8,6 @@ import jdk.jfr.Enabled;
 import lombok.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
 @Setter
@@ -17,18 +16,25 @@ public class Customer{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final long customerId;
+    private long customerId;
 
     private String customerName; // Optional, for logging/reporting
 //    private boolean priority; // True if VIP
     private int retrievalInterval; // Time between purchase attempts
     private int ticketsRequested; // Tickets the customer wants to buy
     private int ticketsPurchased; // Tracks tickets successfully purchased
-    private boolean active; // If customer is active in the system
+    private Boolean active; // If customer is active in the system
 
 
 
+    // CONSTRUCTOR //
 
 
-
+    public Customer(String customerName, int retrievalInterval, int ticketsRequested, int ticketsPurchased, Boolean active) {
+        this.customerName = customerName;
+        this.retrievalInterval = retrievalInterval;
+        this.ticketsRequested = ticketsRequested;
+        this.ticketsPurchased = ticketsPurchased;
+        this.active = active;
+    }
 }
