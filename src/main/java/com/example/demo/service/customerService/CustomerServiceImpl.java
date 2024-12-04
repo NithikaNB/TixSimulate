@@ -40,31 +40,32 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public void executeTask(Long customerId) {
-
+    public void startCustomerTask(Long customerId) {
         try {
-            // Creates a customer object
-            Customer customer1 = new Customer(1, "Customer1", 10, 5, 0, true);
+            // Create a Customer object
+            Customer customer1 = new Customer("Customer1", 10, 5, 0, true);
+            logger.info("Customer object created: " + customer1.getCustomerName());
 
-            // Creates a ticket pool using the Service Class
-            String ticketPoolName = "Movie";
-            int ticketCount = 100;
+            // Create a Ticket Pool using the Service Class
+            String ticketPoolName = "Movie";  // Name of the ticket pool
+            int ticketCount = 100;           // Total tickets available
             ticketPoolService.createTicketPool(ticketPoolName, ticketCount);
+            logger.info("Ticket pool created: " + ticketPoolName + " with " + ticketCount + " tickets");
 
-            // Retrieving an object into a variable
+            // Retrieve the Ticket Pool object
             TicketPool ticketPool = ticketPoolService.getTicketPoolByName(ticketPoolName);
 
+            // Create a CustomerTask and submit it for execution
             CustomerTask customerTask = new CustomerTask(customer1, ticketPool, ticketPoolService);
-            logger.info("customer1 and ticketPool objects created");
-//            System.out.println("Objects created");
+            logger.info("CustomerTask object created for execution");
             executorService.submit(customerTask);
-//            System.out.println("Tasks executed");
-            logger.info("Task executed...");
-        }catch (Exception e){
+            logger.info("Task submitted for execution...");
+        } catch (Exception e) {
+            // Handle and log any exceptions
             String message = "Error occurred: " + e.getMessage();
             System.out.println(message);
             logger.error(message);
         }
-
     }
+
 }

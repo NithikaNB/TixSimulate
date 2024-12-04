@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/ticket-pools")
 public class TicketPoolControllerImpl implements TicketPoolController{
 
+    // ATTRIBUTES //
     private final TicketPoolService ticketPoolService;
 
     // CONSTRUCTOR //
@@ -19,6 +20,7 @@ public class TicketPoolControllerImpl implements TicketPoolController{
     }
 
 
+    // IMPLEMENTATION //
     @PostMapping("/create")
     @Override
     public CommonResponse createTicketPool(

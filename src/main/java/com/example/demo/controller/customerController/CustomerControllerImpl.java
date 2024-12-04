@@ -5,7 +5,6 @@ import com.example.demo.dto.response.ResponseConstants;
 import com.example.demo.model.customer.Customer;
 import com.example.demo.service.customerService.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,7 +26,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     @PostMapping("/{customerId}/start-task")
     public CommonResponse startCustomerTask(@PathVariable Long customerId) {
-        customerService.executeTask(customerId);
+        customerService.startCustomerTask(customerId);
         String message = "Customer task started successfully!";
         return new CommonResponse(ResponseConstants.SUCCESS, message);
     }
