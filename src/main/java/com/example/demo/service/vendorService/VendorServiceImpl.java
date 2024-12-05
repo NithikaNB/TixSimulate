@@ -2,6 +2,8 @@ package com.example.demo.service.vendorService;
 
 import com.example.demo.model.ticketPool.TicketPool;
 import com.example.demo.model.vendor.Vendor;
+import com.example.demo.service.Task.TaskFactory;
+import com.example.demo.service.Task.VendorTask;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,13 @@ public class VendorServiceImpl implements VendorService {
     // ATTRIBUTES //
     private static final Logger logger = Logger.getLogger(VendorServiceImpl.class.getName());
     private final Map<Long, Vendor> vendorMap = new ConcurrentHashMap<>();
-    private final TicketPoolService ticketPoolService;
+    private final TaskFactory taskFactory;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     // CONSTRUCTOR //
     @Autowired
-    public VendorServiceImpl(TicketPoolService ticketPoolService) {
-        this.ticketPoolService = ticketPoolService;
+    public VendorServiceImpl(TaskFactory taskFactory) {
+        this.taskFactory = taskFactory;
     }
 
     // IMPLEMENTATION //
@@ -56,10 +58,50 @@ public class VendorServiceImpl implements VendorService {
         }
 
         // Pass vendor, ticketPool, ticketPoolService objects into VendorTask and create a vendorTask object
-        VendorTask vendorTask = new VendorTask(vendor, ticketPool, ticketPoolService);
+        VendorTask vendorTask = taskFactory.createVendorTask(vendor, ticketPool);
         executorService.submit(vendorTask);
         logger.info("Vendor task started for vendor ID: " + vendorId);
 
 
+    }
+
+    @Override
+    public Vendor findVendorByName(String vendorName) {
+        // Check whether the vendorName is empty
+        if (vendorName == null || vendorName.trim().isEmpty()) {
+            logger.warning("Invalid vendor name provided for search.");
+            throw new IllegalArgumentException("Vendor name must not be null or empty.");
+        }
+
+        // Iterating each vendor object in the hashmap to find a match
+        for (Vendor vendor : vendorMap.values()) {
+            if (vendor.getVendorName().equalsIgnoreCase(vendorName)) {
+                logger.info("Vendor found: " + vendorName);
+                return vendor;
+            }
+        }
+
+        // When fails to find a match
+        logger.warning("Vendor not found with name: " + vendorName);
+        throw new IllegalArgumentException("Vendor not found with name: " + vendorName);
+    }
+
+    @Override
+    public Vendor findVendorById(Long vendorId) {
+        // Check whether the vendorId is empty
+        if (vendorId == null) {
+            logger.warning("Invalid vendor ID provided for search.");
+            throw new IllegalArgumentException("Vendor ID must not be null.");
+        }
+
+        Vendor vendor = vendorMap.get(vendorId);
+        if (vendor != null) {
+            logger.info("Vendor found with ID: " + vendorId);
+            return vendor;
+        }
+
+        // When fails to find a match
+        logger.warning("Vendor not found with ID: " + vendorId);
+        throw new IllegalArgumentException("Vendor not found with ID: " + vendorId);
     }
 }

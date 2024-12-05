@@ -1,12 +1,10 @@
-package com.example.demo.service.vendorService;
+package com.example.demo.service.Task;
 
 import com.example.demo.model.ticketPool.TicketPool;
 import com.example.demo.model.vendor.Vendor;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.table.TableRowSorter;
 
 public class VendorTask implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(VendorTask.class);

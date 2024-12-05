@@ -2,7 +2,9 @@ package com.example.demo.controller.ticketPoolController;
 
 import com.example.demo.dto.response.CommonResponse;
 import com.example.demo.dto.response.ResponseConstants;
+import com.example.demo.service.customerService.CustomerService;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
+import com.example.demo.service.vendorService.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +14,15 @@ public class TicketPoolControllerImpl implements TicketPoolController{
 
     // ATTRIBUTES //
     private final TicketPoolService ticketPoolService;
+    private final CustomerService customerService;
+    private final VendorService vendorService;
 
     // CONSTRUCTOR //
     @Autowired
-    public TicketPoolControllerImpl(TicketPoolService ticketPoolService) {
+    public TicketPoolControllerImpl(TicketPoolService ticketPoolService, CustomerService customerService, VendorService vendorService) {
         this.ticketPoolService = ticketPoolService;
+        this.customerService = customerService;
+        this.vendorService = vendorService;
     }
 
 
@@ -68,6 +74,16 @@ public class TicketPoolControllerImpl implements TicketPoolController{
         }
     }
 
-
-
+    @PostMapping("/sample-task")
+    @Override
+    public CommonResponse sampleTask() {
+        try {
+            ticketPoolService.sampleTask();
+            String message = "asd";
+            return new CommonResponse(ResponseConstants.SUCCESS, message);
+        }catch (Exception e){
+            String message = "An error occurred: " + e.getMessage();
+            return new CommonResponse(ResponseConstants.UNSUCCESSFUL, message);
+        }
+    }
 }

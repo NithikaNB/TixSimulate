@@ -7,4 +7,6 @@ public interface VendorService {
 
     void createVendor (Vendor vendor);
     void startVendorTask(Long vendorId, TicketPool ticketPool);
+    Vendor findVendorByName(String vendorName);
+    Vendor findVendorById(Long vendorId);
 }

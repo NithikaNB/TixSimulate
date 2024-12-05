@@ -14,16 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class VendorControllerImpl implements VendorController {
 
     // ATTRIBUTES //
-    private final VendorService vendorService;
-    private final TicketPoolService ticketPoolService;
+    @Autowired
+    VendorService vendorService;
+//    private final TicketPoolService ticketPoolService;
 
 
     // CONSTRUCTOR //
-    @Autowired
-    public VendorControllerImpl(VendorService vendorService, TicketPoolService ticketPoolService) {
-        this.vendorService = vendorService;
-        this.ticketPoolService = ticketPoolService;
-    }
 
     // IMPLEMENTATION //
     @PostMapping
@@ -39,17 +35,17 @@ public class VendorControllerImpl implements VendorController {
         }
     }
 
-    @PostMapping("/{vendorId}/start-task")
-    @Override
-    public CommonResponse startVendorTask(@PathVariable Long vendorId, @PathVariable Long ticketPoolId) {
-        TicketPool ticketPool = ticketPoolService.getTicketPoolById(ticketPoolId);
-        try {
-            vendorService.startVendorTask(vendorId, ticketPool);
-            String message = "Customer task started successfully!";
-            return new CommonResponse(ResponseConstants.SUCCESS, message);
-        }catch (Exception e){
-            return new CommonResponse(ResponseConstants.UNSUCCESSFUL, e.getMessage());
-        }
-
-    }
+//    @PostMapping("/{vendorId}/start-task")
+//    @Override
+//    public CommonResponse startVendorTask(@PathVariable Long vendorId, @PathVariable Long ticketPoolId) {
+//        TicketPool ticketPool = ticketPoolService.getTicketPoolById(ticketPoolId);
+//        try {
+//            vendorService.startVendorTask(vendorId, ticketPool);
+//            String message = "Customer task started successfully!";
+//            return new CommonResponse(ResponseConstants.SUCCESS, message);
+//        }catch (Exception e){
+//            return new CommonResponse(ResponseConstants.UNSUCCESSFUL, e.getMessage());
+//        }
+//
+//    }
 }

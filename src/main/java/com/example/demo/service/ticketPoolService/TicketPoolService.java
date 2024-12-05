@@ -10,4 +10,5 @@ public interface TicketPoolService {
     TicketPool getTicketPoolById(Long ticketPoolId);
     TicketPool getTicketPoolByName(String ticketPoolName);
     int getAvailableTickets(String ticketPoolName);
+    void sampleTask();
 }

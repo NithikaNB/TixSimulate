@@ -6,5 +6,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface CustomerController {
     CommonResponse createCustomer(Customer customer);
-    CommonResponse startCustomerTask(Long customerId, Long ticketPoolId);
+//    CommonResponse startCustomerTask(Long customerId, Long ticketPoolId);
 }

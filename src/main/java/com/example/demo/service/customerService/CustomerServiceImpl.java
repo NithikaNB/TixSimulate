@@ -2,12 +2,11 @@ package com.example.demo.service.customerService;
 
 import com.example.demo.model.customer.Customer;
 import com.example.demo.model.ticketPool.TicketPool;
-import com.example.demo.model.vendor.Vendor;
+import com.example.demo.service.Task.CustomerTask;
+import com.example.demo.service.Task.TaskFactory;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
-import com.example.demo.service.vendorService.VendorTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -25,11 +24,10 @@ public class CustomerServiceImpl implements CustomerService{
     // The ExecutorService manages the lifecycle of the threads and executes tasks asynchronously.
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-    private TicketPoolService ticketPoolService;
+    private final TaskFactory taskFactory;
 
-
-    public CustomerServiceImpl(TicketPoolService ticketPoolService) {
-        this.ticketPoolService = ticketPoolService;
+    public CustomerServiceImpl(TaskFactory taskFactory) {
+        this.taskFactory = taskFactory;
     }
 
     @Override
@@ -99,8 +97,48 @@ public class CustomerServiceImpl implements CustomerService{
         }
 
         // Pass customer, ticketPool, ticketPoolService objects into CustomerTask and create a customerTask object
-        CustomerTask customerTask = new CustomerTask(customer, ticketPool, ticketPoolService);
+        CustomerTask customerTask = taskFactory.createCustomerTask(customer, ticketPool);
         executorService.submit(customerTask);
         logger.info("Customer task started for customer ID: " + customerId);
+    }
+
+    @Override
+    public Customer findCustomerByName(String customerName) {
+        // Check whether the customerName is empty
+        if (customerName == null || customerName.trim().isEmpty()) {
+            logger.error("Invalid customer name provided for search.");
+            throw new IllegalArgumentException("Customer name must not be null or empty.");
+        }
+
+        // Iterating each customer object in the hashmap to find a match
+        for (Customer customer : customerMap.values()) {
+            if (customer.getCustomerName().equalsIgnoreCase(customerName)) {
+                logger.info("Customer found: " + customerName);
+                return customer;
+            }
+        }
+
+        // When fails to find a match
+        logger.error("Customer not found with name: " + customerName);
+        throw new IllegalArgumentException("Customer not found with name: " + customerName);
+    }
+
+    @Override
+    public Customer findCustomerById(Long customerId) {
+        // Check whether the customerId is empty
+        if (customerId == null) {
+            logger.error("Invalid customer ID provided for search.");
+            throw new IllegalArgumentException("Customer ID must not be null.");
+        }
+
+        Customer customer = customerMap.get(customerId);
+        if (customer != null) {
+            logger.info("Customer found with ID: " + customerId);
+            return customer;
+        }
+
+        // When fails to find a match
+        logger.error("Customer not found with ID: " + customerId);
+        throw new IllegalArgumentException("Customer not found with ID: " + customerId);
     }
 }

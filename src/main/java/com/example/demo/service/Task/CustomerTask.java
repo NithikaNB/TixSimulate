@@ -1,12 +1,10 @@
-package com.example.demo.service.customerService;
+package com.example.demo.service.Task;
 
 import com.example.demo.model.customer.Customer;
 import com.example.demo.model.ticketPool.TicketPool;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
-import com.example.demo.service.ticketPoolService.TicketPoolServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class CustomerTask implements Runnable{
     // ATTRIBUTES //

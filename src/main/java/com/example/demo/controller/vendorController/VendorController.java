@@ -6,5 +6,5 @@ import com.example.demo.model.vendor.Vendor;
 
 public interface VendorController {
     CommonResponse createVendor (Vendor vendor);
-    CommonResponse startVendorTask (Long vendorId, Long ticketPoolId);
+//    CommonResponse startVendorTask (Long vendorId, Long ticketPoolId);
 }

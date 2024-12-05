@@ -1,11 +1,20 @@
 package com.example.demo.service.ticketPoolService;
 
+import com.example.demo.model.customer.Customer;
 import com.example.demo.model.ticketPool.TicketPool;
-import com.example.demo.repository.ticketPoolRepository.TicketPoolRepository;
+import com.example.demo.model.vendor.Vendor;
+import com.example.demo.service.Task.CustomerTask;
+import com.example.demo.service.Task.TaskFactory;
+import com.example.demo.service.Task.VendorTask;
+import com.example.demo.service.customerService.CustomerService;
+import com.example.demo.service.vendorService.VendorService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 @Service
@@ -13,15 +22,17 @@ public class TicketPoolServiceImpl implements TicketPoolService{
 
     // ATTRIBUTES //
 //    private final TicketPoolRepository ticketPoolRepository;
+    private final TaskFactory taskFactory;
     private final Map<Long, TicketPool> ticketPoolMap = new ConcurrentHashMap<>();
     private static final Logger logger = Logger.getLogger(TicketPoolServiceImpl.class.getName());
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
 
     // CONSTRUCTOR //
-//    public TicketPoolServiceImpl() {
-//        this.ticketPoolRepository = ticketPoolRepository;
-//        logger.info("TicketPoolService constructor has been initialized.");
-//    }
+
+    public TicketPoolServiceImpl(@Lazy TaskFactory taskFactory) {
+        this.taskFactory = taskFactory;
+    }
 
 
     // METHODS //
@@ -145,6 +156,32 @@ public class TicketPoolServiceImpl implements TicketPoolService{
     public int getAvailableTickets(String ticketPoolName) {
         TicketPool ticketPool = getTicketPoolByName(ticketPoolName);
         return ticketPool.getAvailableTickets();
+    }
+
+    @Override
+    public void sampleTask() {
+        //Create a Sample TicketPool object
+        // 1. Create and retrieve TicketPool
+        createTicketPool("movie", 100);
+        TicketPool ticketPool = getTicketPoolByName("movie");
+
+        // 2. Create Customers and Vendors using their respective services
+        Customer customer1 = new Customer("Alice", 15, 5, 0, true);  // Example customer
+        Customer customer2 = new Customer("Bob", 10, 10, 0,true);    // Example customer
+        Vendor vendor1 = new Vendor("Vendor A", 1, 10, true);  // Example vendor
+        Vendor vendor2 = new Vendor("Vendor B", 1, 5, true);  // Example vendor
+
+        CustomerTask customerTask1 = taskFactory.createCustomerTask(customer1, ticketPool);
+        CustomerTask customerTask2 = taskFactory.createCustomerTask(customer2, ticketPool);
+        VendorTask vendorTask1 = taskFactory.createVendorTask(vendor1, ticketPool);
+        VendorTask vendorTask2 = taskFactory.createVendorTask(vendor2, ticketPool);
+
+        executorService.submit(customerTask1);
+        executorService.submit(customerTask2);
+        executorService.submit(vendorTask1);
+        executorService.submit(vendorTask2);
+        // 6. Log task start
+        logger.info("All Customer and Vendor tasks have been started.");
     }
 
 }
