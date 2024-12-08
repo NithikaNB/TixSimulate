@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/ticket-pools")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TicketPoolControllerImpl implements TicketPoolController{
 
     // ATTRIBUTES //
@@ -26,15 +27,16 @@ public class TicketPoolControllerImpl implements TicketPoolController{
     }
 
 
-    // IMPLEMENTATION //
+    // METHODS //
     @PostMapping("/create")
     @Override
     public CommonResponse createTicketPool(
             @RequestParam String ticketPoolName,
-            @RequestParam int ticketCount) {
+            @RequestParam int ticketCount,
+            @RequestParam int maxTicketCapacity) {
 
         try {
-            ticketPoolService.createTicketPool(ticketPoolName, ticketCount);
+            ticketPoolService.createTicketPool(ticketPoolName, ticketCount, maxTicketCapacity);
             return new CommonResponse(ResponseConstants.SUCCESS, "Ticket pool: "+ ticketPoolName + ", has been created");
         } catch (Exception e){
             String message = "An error occurred: " + e.getMessage();
@@ -85,5 +87,13 @@ public class TicketPoolControllerImpl implements TicketPoolController{
             String message = "An error occurred: " + e.getMessage();
             return new CommonResponse(ResponseConstants.UNSUCCESSFUL, message);
         }
+    }
+
+    @GetMapping("/availabletickets/{ticketPoolName}")
+    @Override
+    public Integer getAvailableTickets(@RequestParam String ticketPoolName) {
+        Integer IntegerValue = ticketPoolService.getAvailableTickets(ticketPoolName);
+        return IntegerValue;
+
     }
 }

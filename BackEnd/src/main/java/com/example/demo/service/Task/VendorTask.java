@@ -24,13 +24,20 @@ public class VendorTask implements Runnable {
             while (0 < ticketPoolService.getAvailableTickets(ticketPool.getTicketPoolName())){
                 synchronized (ticketPoolService){
                     // Add tickets to the ticket pool (Given ticket pool object)
-                    ticketPoolService.addTicket(ticketPool.getTicketPoolId(), vendor.getTicketsPerRelease());
-                    String message = vendor.getVendorName() + " added " + vendor.getTicketsPerRelease()
-                            + " tickets to the pool: " + ticketPool.getTicketPoolName()
-                            + " | Available Tickets: " + ticketPoolService.getAvailableTickets(ticketPool.getTicketPoolName());
+                    int newTicketCount = ticketPoolService.getAvailableTickets(ticketPool.getTicketPoolName()) + vendor.getTicketsPerRelease();
+                    if (newTicketCount < ticketPool.getMaxTicketCapacity()){
+                        ticketPoolService.addTicket(ticketPool.getTicketPoolId(), vendor.getTicketsPerRelease());
+                        String message = vendor.getVendorName() + " added " + vendor.getTicketsPerRelease()
+                                + " tickets to the pool: " + ticketPool.getTicketPoolName()
+                                + " | Available Tickets: " + ticketPoolService.getAvailableTickets(ticketPool.getTicketPoolName());
 
-                    // Logging the release of tickets
-                    logger.info(message);
+                        // Logging the release of tickets
+                        logger.info(message);
+                    } else if (newTicketCount > ticketPool.getMaxTicketCapacity()){
+                        String message = "Tickets haven't been added by vendor: " + vendor.getVendorName() + " because it exceeds the max ticket count of the ticket pool.";
+                        logger.error(message);
+                    }
+
 
                 }
 

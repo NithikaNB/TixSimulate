@@ -21,6 +21,7 @@ public class TicketPool {
     private long ticketPoolId;
 
     private String ticketPoolName;
+    private int maxTicketCapacity;
 
     @Transient //Exclude from persistence; manage the tickets in memory
     private final Queue<Integer> availableTickets = new ConcurrentLinkedDeque<>(); // Thread-safe
@@ -28,15 +29,16 @@ public class TicketPool {
     // Constructors
 
 
-    public TicketPool(String ticketPoolName, int ticketCount) {
+    public TicketPool(String ticketPoolName, int ticketCount, int maxTicketCapacity) {
         this.ticketPoolName = ticketPoolName;
         addTickets(ticketCount);
+        this.maxTicketCapacity = maxTicketCapacity;
     }
 
     // Method for adding a ticket to the ticket pool
     public void addTickets(int ticketCount){
         for (int i = 0; i < ticketCount; i++){
-            availableTickets.add(1);
+                availableTickets.add(1);
         }
     }
 
@@ -56,5 +58,8 @@ public class TicketPool {
     public int getAvailableTickets(){
         return availableTickets.size();
     }
+
+
+    //Getters
 
 }

@@ -39,13 +39,13 @@ public class TicketPoolServiceImpl implements TicketPoolService{
 
     // Method to create a ticket pool
     @Override
-    public void createTicketPool(String ticketPoolName, int ticketCount) {
+    public void createTicketPool(String ticketPoolName, int ticketCount, int maxTicketCapacity) {
         if (ticketPoolMap.containsValue(ticketPoolName)){
             throw new IllegalArgumentException("Ticket pool with the name: " + ticketPoolName + " already exists!");
         }
 
         // Creation of a new ticketPool object
-        TicketPool ticketPool = new TicketPool(ticketPoolName, ticketCount);
+        TicketPool ticketPool = new TicketPool(ticketPoolName, ticketCount, maxTicketCapacity);
         long ticketPoolId = ticketPool.getTicketPoolId();
 
         // Storing the created object in a HashMap
@@ -67,6 +67,11 @@ public class TicketPoolServiceImpl implements TicketPoolService{
 
         // Retrieve ticket pool from the hash map
         TicketPool ticketPool = ticketPoolMap.get(ticketPoolId);
+
+        // Check whether there exist a ticket pool with provided ID
+        if(ticketPool == null){
+            throw new IllegalArgumentException("Ticket pool not found for ID: "+ ticketPoolId);
+        }
 
         // Check whether there exist a ticket pool with provided ID
         if(ticketPool == null){
@@ -161,7 +166,7 @@ public class TicketPoolServiceImpl implements TicketPoolService{
     public void sampleTask() {
         //Create a Sample TicketPool object
         // 1. Create and retrieve TicketPool
-        createTicketPool("movie", 100);
+        createTicketPool("movie", 100, 200);
         TicketPool ticketPool = getTicketPoolByName("movie");
 
         // 2. Create Customers and Vendors using their respective services

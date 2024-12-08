@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/vendors")
+@CrossOrigin(origins = "http://localhost:4200")
 public class VendorControllerImpl implements VendorController {
 
     // ATTRIBUTES //
