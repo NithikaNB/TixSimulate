@@ -26,22 +26,16 @@ public class Configuration implements Serializable {
     private int customerRetrievalRate;
     private int maxTicketCapacity;
 
-    // Static counter to keep track of the last used ID
-    private static long idCounter = 0;
+
 
     // CONSTRUCTOR //
     public Configuration(int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
-        this.configurationId = generateId();
         this.totalTickets = totalTickets;
         this.ticketReleaseRate = ticketReleaseRate;
         this.customerRetrievalRate = customerRetrievalRate;
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
-    // Generate a new sequential ID
-    private static long generateId() {
-        return ++idCounter;  // Increment and return the new ID
-    }
 
 
 }

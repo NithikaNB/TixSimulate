@@ -3,6 +3,7 @@ import { ConfigurationService } from '../services/configuration.service';
 import { Configuration } from '../models/configuration.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-configuration',
@@ -13,30 +14,40 @@ import { CommonModule } from '@angular/common';
 })
 
 export class ConfigurationComponent {
-  constructor(private configService: ConfigurationService) {}
+  constructor(
+    private configService: ConfigurationService,
+    private snackBar: MatSnackBar) {}
 
   onSubmit(form: any): void {
     const config: Configuration = {
-        maximumTicketCapacity: form.value.maximumTicketCapacity,
-        totalNumberOfTickets: form.value.totalNumberOfTickets,
+        totalTickets: form.value.totalTickets,
         ticketReleaseRate: form.value.ticketReleaseRate,
-        customerRetrievalRate: form.value.customerRetrievalRate
+        customerRetrievalRate: form.value.customerRetrievalRate,
+        maxTicketCapacity: form.value.maxTicketCapacity
     };
 
     this.configService.postConfiguration(config).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         if (response.status === 0) {
-          console.log('Configuration saved successfully:', response);
-          alert('Configuration saved successfully!');
+          this.snackBar.open('Configuration saved successfully!', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-success']
+        });
+        console.log('Configuration saved successfully:', response);
       } else {
-          console.error('Error from backend:', response.message);
-          alert(`Error: ${response.message}`);
+          this.snackBar.open(`Error: ${response.message}`, 'Close', {
+            duration: 5000,
+            panelClass: ['snackbar-error']
+        });
+        console.error('Error from backend:', response.message);
       }
 
       },
       error: (error) => {
-          console.error('Error saving configuration:', error);
-          alert('An unexpected error occurred while saving the configuration.');
+          this.snackBar.open('An unexpected error occurred!', 'Close', {
+            duration: 5000,
+            panelClass: ['snackbar-error']
+      });
       }
   });
 }

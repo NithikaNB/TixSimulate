@@ -1,6 +1,6 @@
 export interface Configuration {
-  maximumTicketCapacity: number;
-  totalNumberOfTickets: number;
+  totalTickets: number;
   ticketReleaseRate: number;
   customerRetrievalRate: number;
+  maxTicketCapacity: number;
 }

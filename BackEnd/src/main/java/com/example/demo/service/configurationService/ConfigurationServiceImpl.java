@@ -17,9 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 @Service
-public class ConfigurationServiceImpl implements ConfigurationService{
+public class ConfigurationServiceImpl implements ConfigurationService {
 
     private final TaskFactory taskFactory;
     private final TicketPoolService ticketPoolService;
@@ -39,7 +37,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
     private final AtomicBoolean running = new AtomicBoolean(false);
     private static long idCounter = 0;
 
-    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    Gson gson = new Gson();
 
 
     @Autowired
@@ -51,7 +49,11 @@ public class ConfigurationServiceImpl implements ConfigurationService{
     @Override
     public void createConfig(Configuration configuration) {
 
+
         // Validation
+        if (configuration == null) {
+            throw new IllegalArgumentException("Configuration wasn't received properly.");
+        }
         if (configuration.getTotalTickets() <= 0) {
             throw new IllegalArgumentException("Total tickets must be greater than 0.");
         }
@@ -75,7 +77,7 @@ public class ConfigurationServiceImpl implements ConfigurationService{
 
         // Save to the HashMap and in a Json file
         configurationMap.put(configurationId, configuration);
-        saveToJson("Config");
+        saveToJson("config.json", configuration);
 
         logger.info("Configuration saved with ID: {}", configuration.getConfigurationId());
     }
@@ -141,11 +143,13 @@ public class ConfigurationServiceImpl implements ConfigurationService{
     }
 
     @Override
-    public void saveToJson(String filePath) {
-        try (FileWriter fw = new FileWriter(filePath);) {
+    public void saveToJson(String filePath, Configuration configuration) {
+        try (FileWriter fw = new FileWriter(filePath, true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            String configJson = gson.toJson(configuration);
+            bw.write(configJson);
+            bw.newLine(); // Add a new line after each JSON object
             logger.info("Configuration saved successfully!");
-            JsonElement configJson = gson.toJsonTree(this);
-            gson.toJson(configJson, fw);
 
         } catch (Exception e) {
             logger.error("Failed to save configuration: " + e.getMessage());
