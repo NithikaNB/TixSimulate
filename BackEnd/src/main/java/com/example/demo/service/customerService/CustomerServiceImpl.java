@@ -2,9 +2,8 @@ package com.example.demo.service.customerService;
 
 import com.example.demo.model.customer.Customer;
 import com.example.demo.model.ticketPool.TicketPool;
-import com.example.demo.service.Task.CustomerTask;
-import com.example.demo.service.Task.TaskFactory;
-import com.example.demo.service.ticketPoolService.TicketPoolService;
+import com.example.demo.service.task.CustomerTask;
+import com.example.demo.service.task.TaskFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

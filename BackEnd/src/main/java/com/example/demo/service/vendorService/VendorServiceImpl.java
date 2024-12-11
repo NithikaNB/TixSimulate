@@ -2,9 +2,8 @@ package com.example.demo.service.vendorService;
 
 import com.example.demo.model.ticketPool.TicketPool;
 import com.example.demo.model.vendor.Vendor;
-import com.example.demo.service.Task.TaskFactory;
-import com.example.demo.service.Task.VendorTask;
-import com.example.demo.service.ticketPoolService.TicketPoolService;
+import com.example.demo.service.task.TaskFactory;
+import com.example.demo.service.task.VendorTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

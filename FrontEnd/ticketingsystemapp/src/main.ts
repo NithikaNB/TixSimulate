@@ -6,13 +6,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { ConfigurationComponent } from './app/configuration/configuration.component';
 import { LogDisplayComponent } from './app/log-display/log-display.component';
 import { AppRootComponent } from './app/app-root/app-root.component';
+import { DashboardComponent } from './app/dashboard/dashboard.component';
 
 bootstrapApplication(AppRootComponent,{
   providers: [
       provideRouter([
           { path: '', redirectTo: '/configuration', pathMatch: 'full' }, // Default route
           { path: 'configuration', component: ConfigurationComponent },
-          { path: 'logs', component: LogDisplayComponent }
+          { path: 'logs', component: DashboardComponent }
       ]),
       provideHttpClient(),
       MatSnackBarModule,

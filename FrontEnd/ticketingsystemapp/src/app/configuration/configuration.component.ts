@@ -34,6 +34,7 @@ export class ConfigurationComponent {
         if (response.status === 0) {
           this.snackBar.open('Configuration saved successfully!', 'Close', {duration: 3000, panelClass: ['snackbar-success']});
           console.log('Configuration saved successfully:', response);
+
           this.router.navigate(['/logs']); // Navigate to logs page
         } else {
           this.snackBar.open(`Error: ${response.message}`, 'Close', {

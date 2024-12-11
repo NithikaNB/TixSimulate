@@ -4,9 +4,9 @@ import com.example.demo.model.configuration.Configuration;
 import com.example.demo.model.customer.Customer;
 import com.example.demo.model.ticketPool.TicketPool;
 import com.example.demo.model.vendor.Vendor;
-import com.example.demo.service.Task.CustomerTask;
-import com.example.demo.service.Task.TaskFactory;
-import com.example.demo.service.Task.VendorTask;
+import com.example.demo.service.task.CustomerTask;
+import com.example.demo.service.task.TaskFactory;
+import com.example.demo.service.task.VendorTask;
 import com.example.demo.service.customerService.CustomerServiceImpl;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
 import com.google.gson.Gson;
@@ -78,6 +78,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         saveToJson("config.json", configuration);
 
         logger.info("Configuration saved with ID: {}", configuration.getConfigurationId());
+
+        // Creates an empty ticket pool with the name of "movie" for simulation purpose
+        if(ticketPoolService.getTicketPoolByName("movie") == null) {
+            ticketPoolService.createTicketPool("movie", configuration.getTotalTickets(), configuration.getMaxTicketCapacity());
+        }
     }
 
     @Override
@@ -100,15 +105,16 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
             // Loading the latest config
             Configuration configuration = getLatestConfig();
-            System.out.println(configuration);
 
-            // Creating the ticketPool and assign it
-            ticketPoolService.createTicketPool("Movie Tickets",
-                    configuration.getTotalTickets(),
-                    configuration.getMaxTicketCapacity());
-            TicketPool ticketPool = ticketPoolService.getTicketPoolByName("Movie Tickets");
 
-            System.out.println(ticketPool.getAvailableTickets());
+            // Creating a sample ticketPool (If not being created) or get the existing ticketPool object and assign the values according to configuration
+            if (ticketPoolService.getTicketPoolByName("movie") == null) {
+                ticketPoolService.createTicketPool("movie",
+                        configuration.getTotalTickets(),
+                        configuration.getMaxTicketCapacity());
+            }
+            TicketPool ticketPool = ticketPoolService.getTicketPoolByName("movie");
+
 
             // Creating Customers and Vendors
             Customer customer1 = new Customer("Kamal", configuration.getCustomerRetrievalRate(), 5, 0, true);

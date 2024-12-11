@@ -91,7 +91,7 @@ public class TicketPoolControllerImpl implements TicketPoolController{
 
     @GetMapping("/availabletickets/{ticketPoolName}")
     @Override
-    public Integer getAvailableTickets(@RequestParam String ticketPoolName) {
+    public Integer getAvailableTickets(@PathVariable String ticketPoolName) {
         Integer IntegerValue = ticketPoolService.getAvailableTickets(ticketPoolName);
         return IntegerValue;
 

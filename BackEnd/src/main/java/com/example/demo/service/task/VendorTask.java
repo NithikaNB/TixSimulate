@@ -1,4 +1,4 @@
-package com.example.demo.service.Task;
+package com.example.demo.service.task;
 
 import com.example.demo.model.ticketPool.TicketPool;
 import com.example.demo.model.vendor.Vendor;

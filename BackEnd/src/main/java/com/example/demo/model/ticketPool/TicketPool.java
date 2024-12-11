@@ -11,13 +11,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 @Data
-@Entity
 @NoArgsConstructor
 public class TicketPool {
 
-    //Attributes
-    @Id //Auto generate an unique id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // ATTRIBUTES //
+//    @Id //Auto generate an unique id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ticketPoolId;
 
     private String ticketPoolName;
@@ -26,9 +25,7 @@ public class TicketPool {
     @Transient //Exclude from persistence; manage the tickets in memory
     private final Queue<Integer> availableTickets = new ConcurrentLinkedDeque<>(); // Thread-safe
 
-    // Constructors
-
-
+    // CONSTRCUTORS //
     public TicketPool(String ticketPoolName, int ticketCount, int maxTicketCapacity) {
         this.ticketPoolName = ticketPoolName;
         addTickets(ticketCount);
@@ -59,7 +56,5 @@ public class TicketPool {
         return availableTickets.size();
     }
 
-
-    //Getters
 
 }
