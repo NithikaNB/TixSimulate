@@ -202,7 +202,7 @@ public class TicketPoolServiceImpl implements TicketPoolService {
     @PostConstruct
     public void initializeDefaultTicketPool() {
         if (getTicketPoolByName("movie") == null) {
-            createTicketPool("movie", 10, 100); // Adjust default values
+            createTicketPool("movie", 0, 100); // Adjust default values
             logger.info("Default ticket pool 'movie' created.");
         }
 

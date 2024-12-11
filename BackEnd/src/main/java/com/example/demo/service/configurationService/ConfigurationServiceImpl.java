@@ -114,6 +114,10 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                         configuration.getMaxTicketCapacity());
             }
             TicketPool ticketPool = ticketPoolService.getTicketPoolByName("movie");
+            ticketPool.setMaxTicketCapacity(configuration.getMaxTicketCapacity());
+            if (ticketPool.getAvailableTickets() == 0){
+                ticketPool.addTickets(configuration.getTotalTickets());
+            }
 
 
             // Creating Customers and Vendors
