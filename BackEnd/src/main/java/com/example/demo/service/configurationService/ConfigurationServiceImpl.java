@@ -1,7 +1,6 @@
 package com.example.demo.service.configurationService;
 
 import com.example.demo.model.configuration.Configuration;
-import com.example.demo.model.configuration.Configuration1;
 import com.example.demo.model.customer.Customer;
 import com.example.demo.model.ticketPool.TicketPool;
 import com.example.demo.model.vendor.Vendor;
@@ -11,14 +10,12 @@ import com.example.demo.service.Task.VendorTask;
 import com.example.demo.service.customerService.CustomerServiceImpl;
 import com.example.demo.service.ticketPoolService.TicketPoolService;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -36,14 +33,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private final AtomicBoolean running = new AtomicBoolean(false);
     private static long idCounter = 0;
-
+    private final SimpMessagingTemplate messagingTemplate;
     Gson gson = new Gson();
 
 
     @Autowired
-    public ConfigurationServiceImpl(TaskFactory taskFactory, TicketPoolService ticketPoolService) {
+    public ConfigurationServiceImpl(TaskFactory taskFactory, TicketPoolService ticketPoolService, SimpMessagingTemplate messagingTemplate) {
         this.taskFactory = taskFactory;
         this.ticketPoolService = ticketPoolService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @Override

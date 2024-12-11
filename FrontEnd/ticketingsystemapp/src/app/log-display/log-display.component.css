@@ -1,0 +1,20 @@
+.log-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.log-box {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f9f9f9;
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.log-entry {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 5px;
+  word-break: break-word;
+}

@@ -12,7 +12,7 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@Entity
+
 @NoArgsConstructor
 @Data
 public class Configuration implements Serializable {

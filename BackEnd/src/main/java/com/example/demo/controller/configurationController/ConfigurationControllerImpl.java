@@ -21,6 +21,7 @@ public class ConfigurationControllerImpl implements ConfigurationController{
         this.configurationService = configurationService;
     }
 
+
     // METHODS //
 
     @PostMapping("/create-config")
