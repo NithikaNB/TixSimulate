@@ -7,25 +7,24 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 
-@Entity
+//@Entity
 @NoArgsConstructor(force = true)
 @Getter
 @Setter
 public class Vendor{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // ATTRIBUTES //
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vendorId;
-
     private String vendorName; // Optional, for logging/reporting
     private int ticketsPerRelease; // Tickets the vendor release per attempt
     private int releaseInterval; // Time between purchase attempts
-    private Boolean active; // If customer is active in the system
 
-    public Vendor(String vendorName, int ticketsPerRelease, int releaseInterval, Boolean active) {
+    // CONSTRUCTOR //
+    public Vendor(String vendorName, int ticketsPerRelease, int releaseInterval) {
         this.vendorName = vendorName;
         this.ticketsPerRelease = ticketsPerRelease;
         this.releaseInterval = releaseInterval;
-        this.active = active;
     }
 }

@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { LogService } from '../services/log-display/log-display.service';
 import { TicketPoolService } from '../services/ticket-pool/ticket-pool.service';
 import { CommonModule } from '@angular/common';
+import { StartStopButtonComponent } from '../start-stop-button/start-stop-button.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, StartStopButtonComponent], // Add StartStopButtonComponent to imports
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
   logs: string[] = [];

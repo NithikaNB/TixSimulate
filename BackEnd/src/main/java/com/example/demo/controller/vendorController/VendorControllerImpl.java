@@ -17,12 +17,10 @@ public class VendorControllerImpl implements VendorController {
     // ATTRIBUTES //
     @Autowired
     VendorService vendorService;
-//    private final TicketPoolService ticketPoolService;
 
 
-    // CONSTRUCTOR //
-
-    // IMPLEMENTATION //
+    // METHODS //
+    // Method to create a vendor
     @PostMapping
     @Override
     public CommonResponse createVendor(@RequestBody Vendor vendor) {
@@ -36,17 +34,4 @@ public class VendorControllerImpl implements VendorController {
         }
     }
 
-//    @PostMapping("/{vendorId}/start-task")
-//    @Override
-//    public CommonResponse startVendorTask(@PathVariable Long vendorId, @PathVariable Long ticketPoolId) {
-//        TicketPool ticketPool = ticketPoolService.getTicketPoolById(ticketPoolId);
-//        try {
-//            vendorService.startVendorTask(vendorId, ticketPool);
-//            String message = "Customer task started successfully!";
-//            return new CommonResponse(ResponseConstants.SUCCESS, message);
-//        }catch (Exception e){
-//            return new CommonResponse(ResponseConstants.UNSUCCESSFUL, e.getMessage());
-//        }
-//
-//    }
 }

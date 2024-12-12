@@ -21,6 +21,7 @@ public class VendorServiceImpl implements VendorService {
     private final Map<Long, Vendor> vendorMap = new ConcurrentHashMap<>();
     private final TaskFactory taskFactory;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private static long idCounter = 0;
 
     // CONSTRUCTOR //
     @Autowired
@@ -28,7 +29,9 @@ public class VendorServiceImpl implements VendorService {
         this.taskFactory = taskFactory;
     }
 
-    // IMPLEMENTATION //
+    // METHODS //
+
+    // Method to create Vendors
     @Override
     public void createVendor(Vendor vendor) {
 
@@ -37,33 +40,17 @@ public class VendorServiceImpl implements VendorService {
             throw new IllegalArgumentException("Ticket release rate and tickets per release must be greater than zero.");
         }
 
-        // Creates the vendor object
-        long vendorId = vendor.getVendorId();
+        // Creates the vendor id
+        long vendorId = idCounter;
+        ++idCounter;
+        vendor.setVendorId(vendorId);
 
         // Save the vendor with according vendorId inside a hashmap
         vendorMap.put(vendorId, vendor);
         logger.info("Vendor created: " + vendor.getVendorName() + " with ID: " + vendor.getVendorId());
     }
 
-    @Override
-    public void startVendorTask(Long vendorId, TicketPool ticketPool) {
-
-        // Get the vendor object stored inside the hashmap
-        Vendor vendor = vendorMap.get(vendorId);
-
-        // Check whether there exists a vendor object according to the provided vendorId
-        if (vendor == null){
-            throw new IllegalArgumentException("Vendor not found for ID: " + vendorId);
-        }
-
-        // Pass vendor, ticketPool, ticketPoolService objects into VendorTask and create a vendorTask object
-        VendorTask vendorTask = taskFactory.createVendorTask(vendor, ticketPool);
-        executorService.submit(vendorTask);
-        logger.info("Vendor task started for vendor ID: " + vendorId);
-
-
-    }
-
+    // Method to find vendors by their names
     @Override
     public Vendor findVendorByName(String vendorName) {
         // Check whether the vendorName is empty
@@ -85,6 +72,7 @@ public class VendorServiceImpl implements VendorService {
         throw new IllegalArgumentException("Vendor not found with name: " + vendorName);
     }
 
+    // Method to find vendors by their ID
     @Override
     public Vendor findVendorById(Long vendorId) {
         // Check whether the vendorId is empty

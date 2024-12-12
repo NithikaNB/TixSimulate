@@ -1,71 +1,75 @@
-/* Root container for the component */
 .dashboard-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  grid-template-areas:
+    "ticket"
+    "log"
+    "button";
+  grid-template-rows: auto 1fr auto;
+  height: 100vh; /* Full height layout */
+  gap: 20px;
+  padding: 20px;
+  background: #f9f9f9;
 }
 
-/* Individual sections */
-.section {
-  background-color: #ffffff;
+.ticket-section {
+  grid-area: ticket;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #ffffff;
+  padding: 10px 20px;
   border-radius: 8px;
-  padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-}
-
-.section:hover {
-  transform: translateY(-5px);
-}
-
-/* Logs section */
-.log-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #333333;
-}
-
-.log-entry {
-  padding: 0.75rem;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.log-entry:last-child {
-  border-bottom: none;
-}
-
-.log-entry p {
-  margin: 0;
-  color: #555555;
-  font-size: 1rem;
-  word-wrap: break-word;
-}
-
-/* Ticket section */
-.ticket-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #333333;
-}
-
-.ticket-count {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #007bff;
   text-align: center;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-  .dashboard-container {
-    grid-template-columns: 1fr;
-  }
+.ticket-section h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
 
-  .ticket-section {
-    text-align: center;
-  }
+.ticket-count {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.log-section {
+  grid-area: log;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - 150px); /* Adjust height for other sections */
+}
+
+.log-entries {
+  display: flex;
+  flex-direction: column-reverse; /* Show newest logs at the bottom */
+  gap: 10px;
+}
+
+.log-entry {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fafafa;
+  color: #333;
+}
+
+.button-section {
+  grid-area: button;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+app-start-stop-button {
+  width: auto;
 }

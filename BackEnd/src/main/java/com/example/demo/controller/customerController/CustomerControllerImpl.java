@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class CustomerControllerImpl implements CustomerController {
 
+    // ATTRIBUTES //
     @Autowired
     CustomerService customerService;
-//    private final TicketPoolService ticketPoolService;
 
 
+    // METHODS //
 
+    // Method to create customers
     @PostMapping
     public CommonResponse createCustomer(@RequestBody Customer customer){
         try {
@@ -34,17 +36,4 @@ public class CustomerControllerImpl implements CustomerController {
 
     }
 
-//    @PostMapping("/{customerId}/start-task")
-//    public CommonResponse startCustomerTask(@PathVariable Long customerId, @PathVariable Long ticketPoolId) {
-//        TicketPool ticketPool = ticketPoolService.getTicketPoolById(ticketPoolId);
-//
-//        try {
-//            customerService.startCustomerTask(customerId, ticketPool);
-//            String message = "Customer task started successfully!";
-//            return new CommonResponse(ResponseConstants.SUCCESS, message);
-//        }catch (Exception e){
-//            return new CommonResponse(ResponseConstants.UNSUCCESSFUL, e.getMessage());
-//        }
-//
-//    }
 }

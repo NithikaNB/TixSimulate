@@ -1,13 +1,22 @@
 <div class="dashboard-container">
-  <div class="section log-section">
+  <!-- Ticket Count Section -->
+  <div class="ticket-section">
+    <h2>Available Tickets</h2>
+    <p class="ticket-count">{{ availableTicketCount }}</p>
+  </div>
+
+  <!-- Log Section -->
+  <div class="log-section">
     <h2>Logs</h2>
-    <div class="log-entry" *ngFor="let log of logs">
-      <p>{{ log }}</p>
+    <div class="log-entries">
+      <div class="log-entry" *ngFor="let log of logs">
+        <p>{{ log }}</p>
+      </div>
     </div>
   </div>
 
-  <div class="section ticket-section">
-    <h2>Available Tickets</h2>
-    <p class="ticket-count">{{ availableTicketCount }}</p>
+  <!-- Button Section -->
+  <div class="button-section">
+    <app-start-stop-button></app-start-stop-button>
   </div>
 </div>

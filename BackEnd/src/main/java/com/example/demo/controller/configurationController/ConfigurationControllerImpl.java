@@ -23,7 +23,7 @@ public class ConfigurationControllerImpl implements ConfigurationController{
 
 
     // METHODS //
-
+    // Method to create configurations
     @PostMapping("/create-config")
     @Override
     public CommonResponse createConfiguration(@RequestBody Configuration configuration) {
@@ -37,6 +37,7 @@ public class ConfigurationControllerImpl implements ConfigurationController{
         }
     }
 
+    // Method to run the simulation
     @PostMapping("/run-task")
     @Override
     public CommonResponse runTask() {
@@ -49,8 +50,4 @@ public class ConfigurationControllerImpl implements ConfigurationController{
         }
     }
 
-    @Override
-    public CommonResponse getLogger() {
-        return null;
-    }
 }

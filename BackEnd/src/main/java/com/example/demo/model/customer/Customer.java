@@ -7,34 +7,31 @@ import jakarta.persistence.Id;
 import jdk.jfr.Enabled;
 import lombok.*;
 
-@Entity
+//@Entity
 @NoArgsConstructor(force = true)
 @Getter
 @Setter
 //@Builder
 public class Customer{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long customerId;
-
     private String customerName; // Optional, for logging/reporting
 //    private boolean priority; // True if VIP
     private int retrievalInterval; // Time between purchase attempts
     private int ticketsRequested; // Tickets the customer wants to buy
     private int ticketsPurchased; // Tracks tickets successfully purchased
-    private Boolean active; // If customer is active in the system
 
 
 
     // CONSTRUCTOR //
 
 
-    public Customer(String customerName, int retrievalInterval, int ticketsRequested, int ticketsPurchased, Boolean active) {
+    public Customer(String customerName, int retrievalInterval, int ticketsRequested, int ticketsPurchased) {
         this.customerName = customerName;
         this.retrievalInterval = retrievalInterval;
         this.ticketsRequested = ticketsRequested;
         this.ticketsPurchased = ticketsPurchased;
-        this.active = active;
     }
 }

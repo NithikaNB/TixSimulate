@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
 public class TicketPoolServiceImpl implements TicketPoolService {
 
     // ATTRIBUTES //
-//    private final TicketPoolRepository ticketPoolRepository;
     private final TaskFactory taskFactory;
     private final Map<Long, TicketPool> ticketPoolMap = new ConcurrentHashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(TicketPoolServiceImpl.class);
@@ -31,7 +30,6 @@ public class TicketPoolServiceImpl implements TicketPoolService {
 
 
     // CONSTRUCTOR //
-
     public TicketPoolServiceImpl(@Lazy TaskFactory taskFactory) {
         this.taskFactory = taskFactory;
     }
@@ -49,7 +47,6 @@ public class TicketPoolServiceImpl implements TicketPoolService {
 
         // Creation of a new ticketPool object
         TicketPool ticketPool = new TicketPool(ticketPoolName, ticketCount, maxTicketCapacity);
-//        long ticketPoolId = ticketPool.getTicketPoolId();
 
         // get the configurationId
         long ticketPoolId = idCounter;
@@ -114,10 +111,6 @@ public class TicketPoolServiceImpl implements TicketPoolService {
         // Remove tickets
         ticketPool.removeTickets(ticketCount);
 
-        // Logging
-//        logger.info(ticketCount + " tickets removed from ticket pool: " + ticketPool.getTicketPoolName());
-//        System.out.println(ticketCount + " tickets removed from ticket pool: " + ticketPool.getTicketPoolName());
-
 
     }
 
@@ -162,6 +155,7 @@ public class TicketPoolServiceImpl implements TicketPoolService {
         return ticketPool;
     }
 
+    // Method to get all available tickets
     @Override
     public synchronized int getAvailableTickets(String ticketPoolName) {
         TicketPool ticketPool = getTicketPoolByName(ticketPoolName);
@@ -173,32 +167,8 @@ public class TicketPoolServiceImpl implements TicketPoolService {
         return ticketPool.getAvailableTickets();
     }
 
-    @Override
-    public void sampleTask() {
-        //Create a Sample TicketPool object
-        // 1. Create and retrieve TicketPool
-        createTicketPool("movie", 100, 200);
-        TicketPool ticketPool = getTicketPoolByName("movie");
 
-        // 2. Create Customers and Vendors using their respective services
-        Customer customer1 = new Customer("Alice", 15, 5, 0, true);  // Example customer
-        Customer customer2 = new Customer("Bob", 10, 10, 0, true);    // Example customer
-        Vendor vendor1 = new Vendor("Vendor A", 1, 10, true);  // Example vendor
-        Vendor vendor2 = new Vendor("Vendor B", 1, 5, true);  // Example vendor
-
-        CustomerTask customerTask1 = taskFactory.createCustomerTask(customer1, ticketPool);
-        CustomerTask customerTask2 = taskFactory.createCustomerTask(customer2, ticketPool);
-        VendorTask vendorTask1 = taskFactory.createVendorTask(vendor1, ticketPool);
-        VendorTask vendorTask2 = taskFactory.createVendorTask(vendor2, ticketPool);
-
-        executorService.submit(customerTask1);
-        executorService.submit(customerTask2);
-        executorService.submit(vendorTask1);
-        executorService.submit(vendorTask2);
-        // 6. Log task start
-        logger.info("All Customer and Vendor tasks have been started.");
-    }
-
+    // This method will create a ticket pool before the threads begin
     @PostConstruct
     public void initializeDefaultTicketPool() {
         if (getTicketPoolByName("movie") == null) {

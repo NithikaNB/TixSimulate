@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -25,10 +22,10 @@ public class TicketPool {
     @Transient //Exclude from persistence; manage the tickets in memory
     private final Queue<Integer> availableTickets = new ConcurrentLinkedDeque<>(); // Thread-safe
 
-    // CONSTRCUTORS //
-    public TicketPool(String ticketPoolName, int ticketCount, int maxTicketCapacity) {
+    // CONSTRUCTOR //
+    public TicketPool(String ticketPoolName, int totalTickets, int maxTicketCapacity) {
         this.ticketPoolName = ticketPoolName;
-        addTickets(ticketCount);
+        addTickets(totalTickets);
         this.maxTicketCapacity = maxTicketCapacity;
     }
 

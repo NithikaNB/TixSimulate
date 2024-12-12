@@ -28,6 +28,7 @@ public class TicketPoolControllerImpl implements TicketPoolController{
 
 
     // METHODS //
+    // Method to create a ticket pool
     @PostMapping("/create")
     @Override
     public CommonResponse createTicketPool(
@@ -45,6 +46,7 @@ public class TicketPoolControllerImpl implements TicketPoolController{
         }
     }
 
+    // Method to add ticket to a certain ticket pool
     @PostMapping("/{ticketPoolId}/add-ticket")
     @Override
     public CommonResponse addTicket(
@@ -63,6 +65,7 @@ public class TicketPoolControllerImpl implements TicketPoolController{
     }
 
 
+    // Method to remove tickets form a certain ticket pool
     @PostMapping("/{ticketPoolId}/remove-ticket")
     @Override
     public CommonResponse removeTicket(Long ticketPoolId, int ticketCount) {
@@ -76,19 +79,8 @@ public class TicketPoolControllerImpl implements TicketPoolController{
         }
     }
 
-    @PostMapping("/sample-task")
-    @Override
-    public CommonResponse sampleTask() {
-        try {
-            ticketPoolService.sampleTask();
-            String message = "asd";
-            return new CommonResponse(ResponseConstants.SUCCESS, message);
-        }catch (Exception e){
-            String message = "An error occurred: " + e.getMessage();
-            return new CommonResponse(ResponseConstants.UNSUCCESSFUL, message);
-        }
-    }
 
+    // Method to get the available ticket count of a certain ticket pool
     @GetMapping("/availabletickets/{ticketPoolName}")
     @Override
     public Integer getAvailableTickets(@PathVariable String ticketPoolName) {

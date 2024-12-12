@@ -3,6 +3,8 @@ package com.example.demo.dto.response;
 public class ResponseConstants {
 
     // ATTRIBUTES //
+
+    // Response codes to identify the response type
     public static final int SUCCESS = 0;
     public static final int OBJECT_IS_EMPTY = -1;
     public static final int FIELD_MISSING = -2;

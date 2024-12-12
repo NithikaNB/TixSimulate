@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 public interface ConfigurationService {
     void createConfig(Configuration configuration);
-    Logger getLogger();
     void runTask();
     void saveToJson(String filePath, Configuration configuration);
     Configuration loadConfiguration(String filePath);

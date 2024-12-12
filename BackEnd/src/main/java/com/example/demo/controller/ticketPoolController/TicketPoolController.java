@@ -6,6 +6,5 @@ public interface TicketPoolController {
     CommonResponse createTicketPool(String ticketPoolName, int ticketCount, int maxTicketCapacity);
     CommonResponse addTicket(Long ticketPoolId, int ticketCount);
     CommonResponse removeTicket(Long ticketPoolId, int ticketCount);
-    CommonResponse sampleTask();
     Integer getAvailableTickets(String ticketPoolName);
 }

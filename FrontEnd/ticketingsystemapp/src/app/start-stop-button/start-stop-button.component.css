@@ -1,0 +1,19 @@
+.start-stop-button {
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-stop-button.running {
+  background-color: red;
+}
+
+.start-stop-button:not(.running) {
+  background-color: green;
+}

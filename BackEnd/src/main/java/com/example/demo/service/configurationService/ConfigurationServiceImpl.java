@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 @Service
 public class ConfigurationServiceImpl implements ConfigurationService {
 
+    // ATTRIBUTES //
+
     private final TaskFactory taskFactory;
     private final TicketPoolService ticketPoolService;
     private final Map<Long, Configuration> configurationMap = new LinkedHashMap<>();
@@ -37,6 +39,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     Gson gson = new Gson();
 
 
+
+    // CONSTRUCTOR //
     @Autowired
     public ConfigurationServiceImpl(TaskFactory taskFactory, TicketPoolService ticketPoolService, SimpMessagingTemplate messagingTemplate) {
         this.taskFactory = taskFactory;
@@ -44,6 +48,10 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         this.messagingTemplate = messagingTemplate;
     }
 
+
+    // METHODS //
+
+    // Method for create configurations (With proper valdiation)
     @Override
     public void createConfig(Configuration configuration) {
 
@@ -68,7 +76,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             throw new IllegalArgumentException("Total tickets should not exceed maxTicketCapacity");
         }
 
-        // get the configurationId
+        // Get the configurationId
         long configurationId = idCounter;
         ++idCounter;
         configuration.setConfigurationId(configurationId);
@@ -85,11 +93,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
     }
 
-    @Override
-    public Logger getLogger() {
-        return null;
-    }
 
+    // Method with sample threads for the simulation purpose
     @Override
     public void runTask() {
 
@@ -108,35 +113,46 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 
             // Creating a sample ticketPool (If not being created) or get the existing ticketPool object and assign the values according to configuration
+            // Since there is an init method to create a sample ticket pool in TicketPoolServiceImpl, this will check whether it's been created and creates if not one is created
             if (ticketPoolService.getTicketPoolByName("movie") == null) {
                 ticketPoolService.createTicketPool("movie",
                         configuration.getTotalTickets(),
                         configuration.getMaxTicketCapacity());
             }
             TicketPool ticketPool = ticketPoolService.getTicketPoolByName("movie");
+            // Assigning the max ticket capacity to the ticket pool object from the configuration settings
             ticketPool.setMaxTicketCapacity(configuration.getMaxTicketCapacity());
+
+            // If the available ticket count is null, we add ticekts as per in the configuration settings
             if (ticketPool.getAvailableTickets() == 0){
                 ticketPool.addTickets(configuration.getTotalTickets());
             }
 
 
             // Creating Customers and Vendors
-            Customer customer1 = new Customer("Kamal", configuration.getCustomerRetrievalRate(), 5, 0, true);
-            Customer customer2 = new Customer("Nimal", configuration.getCustomerRetrievalRate(), 10, 0, true);
-            Vendor vendor1 = new Vendor("Vendor A", 10, configuration.getTicketReleaseRate(), true);
-            Vendor vendor2 = new Vendor("Vendor B", 5, configuration.getTicketReleaseRate(), true);
+            Customer customer1 = new Customer("Customer A", configuration.getCustomerRetrievalRate(), 5, 0 );
+            Customer customer2 = new Customer("Customer B", configuration.getCustomerRetrievalRate(), 10, 0);
+            Customer customer3 = new Customer("Customer C", configuration.getCustomerRetrievalRate(), 2, 0);
+            Vendor vendor1 = new Vendor("Vendor A", 10, configuration.getTicketReleaseRate());
+            Vendor vendor2 = new Vendor("Vendor B", 5, configuration.getTicketReleaseRate());
+            Vendor vendor3 = new Vendor("Vendor C", 2, configuration.getTicketReleaseRate());
 
             // Create tasks using TaskFactory
             CustomerTask customerTask1 = taskFactory.createCustomerTask(customer1, ticketPool);
             CustomerTask customerTask2 = taskFactory.createCustomerTask(customer2, ticketPool);
+            CustomerTask customerTask3 = taskFactory.createCustomerTask(customer3, ticketPool);
+
             VendorTask vendorTask1 = taskFactory.createVendorTask(vendor1, ticketPool);
             VendorTask vendorTask2 = taskFactory.createVendorTask(vendor2, ticketPool);
+            VendorTask vendorTask3 = taskFactory.createVendorTask(vendor3, ticketPool);
 
             // Submit tasks to ExecutorService
             executorService.submit(customerTask1);
             executorService.submit(customerTask2);
+            executorService.submit(customerTask3);
             executorService.submit(vendorTask1);
             executorService.submit(vendorTask2);
+            executorService.submit(vendorTask3);
 
             logger.info("All tasks have been started.");
 
@@ -150,6 +166,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     }
 
+    // Method to save configuration settings in JSON format
     @Override
     public void saveToJson(String filePath, Configuration configuration) {
         try (FileWriter fw = new FileWriter(filePath, true);
@@ -164,6 +181,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
     }
 
+    // Method to load configuration settings from JSON format
     @Override
     public Configuration loadConfiguration(String filePath) {
         try (FileReader reader = new FileReader(filePath)) {
@@ -175,6 +193,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
     }
 
+    // Method to get the most recent configuration
     public Configuration getLatestConfig(){
 
         if (configurationMap.isEmpty()) {

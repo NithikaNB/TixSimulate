@@ -6,5 +6,4 @@ import com.example.demo.model.configuration.Configuration;
 public interface ConfigurationController {
     CommonResponse createConfiguration (Configuration configuration);
     CommonResponse runTask();
-    CommonResponse getLogger();
 }
