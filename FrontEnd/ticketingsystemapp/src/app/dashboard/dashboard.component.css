@@ -1,75 +1,106 @@
 .dashboard-container {
-  display: grid;
-  grid-template-areas:
-    "ticket"
-    "log"
-    "button";
-  grid-template-rows: auto 1fr auto;
-  height: 100vh; /* Full height layout */
-  gap: 20px;
-  padding: 20px;
-  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f0f0f0;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
 }
 
+.button-section {
+  flex: 1;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff00;
+}
+
+
+
+/* Ticket Section */
 .ticket-section {
-  grid-area: ticket;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #ffffff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  margin: 0 ;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: space-between; /* Adjust spacing dynamically */
+  padding: 10px 20px; /* Add padding for better structure */
+  border-radius: 10px; /* Rounded corners for a polished look */
+  background-color: #f9f9f900; /* Light background color for contrast */
+  width: 300px; /* Fixed width for a compact appearance */
+  max-width: 90%; /* Responsive on smaller screens */
 }
 
 .ticket-section h2 {
   margin: 0;
-  font-size: 1.2rem;
-  color: #333;
+  font-size: 1.5rem; /* Modern, larger heading */
+  color: #333; /* Darker font for better contrast */
 }
 
 .ticket-count {
-  font-size: 2rem;
+  font-size: 2.5rem; /* Highlight ticket count */
   font-weight: bold;
-  color: #4caf50;
+  color: #ff1e56; /* Use a bright modern color (e.g., blue) */
+  margin: 10px 0; /* Reduced gap between elements */
 }
 
+/* Log Section */
 .log-section {
-  grid-area: log;
-  overflow-y: auto;
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-height: calc(100vh - 150px); /* Adjust height for other sections */
-}
-
-.log-entries {
   display: flex;
-  flex-direction: column-reverse; /* Show newest logs at the bottom */
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 60%;
+  flex: 1;
+  padding: 1px;
+  border-radius: 30px; /* Adjust the radius as needed */
+  background-color: #fff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.log-entries {
+  height: 300px;
+  overflow-y: auto;
+
 }
 
 .log-entry {
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fafafa;
-  color: #333;
+  border-bottom: 1px solid #ccc;
+
 }
 
+/* Button Section */
 .button-section {
-  grid-area: button;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 20px;
 }
 
-app-start-stop-button {
-  width: auto;
+/* Angular Component Styling - Start/Stop Button */
+.start-stop-button {
+  transition: all 0.3s ease-in-out;
+  font-family: "Dosis", sans-serif;
+}
+
+.start-stop-button {
+  width: 150px;
+  height: 60px;
+  border-radius: 50px;
+  background-image: linear-gradient(135deg, #feb692 0%, #ea5455 100%);
+  box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
+  outline: none;
+  cursor: pointer;
+  border: none;
+  font-size: 24px;
+  color: white;
+}
+
+.start-stop-button:hover {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+.start-stop-button:active {
+  opacity: 0.5;
 }

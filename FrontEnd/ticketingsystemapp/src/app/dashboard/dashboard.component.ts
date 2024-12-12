@@ -24,6 +24,8 @@ export class DashboardComponent implements OnInit {
     // Fetch logs
     this.logService.getLogs().subscribe((logMessages) => {
       this.logs = logMessages;
+      // Scroll to the bottom of the log-entries container
+      this.scrollToBottom();
     });
 
     // Fetch available ticket count (e.g., for "movie" ticket pool)
@@ -37,4 +39,11 @@ export class DashboardComponent implements OnInit {
     // Start real-time updates for available ticket count
     this.ticketPoolService.startRealTimeUpdates('movie');
   }
+
+  private scrollToBottom() {
+  const logEntriesContainer = document.querySelector('.log-entries');
+  if (logEntriesContainer) {
+    logEntriesContainer.scrollTop = logEntriesContainer.scrollHeight;
+  }
+}
 }

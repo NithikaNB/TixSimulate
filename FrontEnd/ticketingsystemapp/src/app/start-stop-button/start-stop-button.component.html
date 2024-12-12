@@ -2,6 +2,6 @@
   class="start-stop-button"
   [ngClass]="{ 'running': isRunning }"
   (click)="toggleTask()">
-  <span *ngIf="isRunning">&#x1F6D1; Stop</span>
-  <span *ngIf="!isRunning">&#x25B6; Start</span>
+  <span *ngIf="isRunning">Stop</span>
+  <span *ngIf="!isRunning">Start</span>
 </button>

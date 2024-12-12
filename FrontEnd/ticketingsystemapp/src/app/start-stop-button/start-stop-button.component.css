@@ -1,19 +1,28 @@
+/* Inner Styling (Handled by app-start-stop-button itself) */
 .start-stop-button {
-  font-size: 18px;
-  padding: 10px 20px;
-  border: none;
+  transition: all 0.3s ease-in-out;
+  font-family: "Dosis", sans-serif;
+}
+
+.start-stop-button {
+  width: 100px;
+  height: 60px;
+  margin-top: 30px;
+  border-radius: 50px;
+  background-image: linear-gradient(135deg, #feb692 0%, #ea5455 100%);
+  box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
+  outline: none;
   cursor: pointer;
-  border-radius: 5px;
+  border: none;
+  font-size: 20px;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.start-stop-button.running {
-  background-color: red;
+.start-stop-button:hover {
+  transform: translateY(3px);
+  box-shadow: none;
 }
 
-.start-stop-button:not(.running) {
-  background-color: green;
+.start-stop-button:active {
+  opacity: 0.5;
 }

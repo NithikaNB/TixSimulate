@@ -7,7 +7,7 @@
 
   <!-- Log Section -->
   <div class="log-section">
-    <h2>Logs</h2>
+    <h2>Real-Time Log</h2>
     <div class="log-entries">
       <div class="log-entry" *ngFor="let log of logs">
         <p>{{ log }}</p>
@@ -17,6 +17,7 @@
 
   <!-- Button Section -->
   <div class="button-section">
-    <app-start-stop-button></app-start-stop-button>
+    <!-- Angular Start/Stop Button Component -->
+    <app-start-stop-button class="app-start-stop-button"></app-start-stop-button>
   </div>
-</div>
+
