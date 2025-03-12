@@ -45,7 +45,7 @@ TixSimulate is a full-stack application built with **Spring Boot** (backend) and
 ### Frontend Setup
 1. Navigate to the frontend directory:
    ```bash
-   cd frontend
+   cd frontend/ticketingsystemapp
    ```
 2. Install dependencies:
    ```bash
