@@ -34,7 +34,7 @@ TixSimulate is a full-stack application built with **Spring Boot** (backend) and
 1. Clone the repository.
    ```bash
    git clone https://github.com/NithikaNB/TixSimulate.git
-   cd backend
+   cd BackEnd
    ```
 2. Build and run the Spring Boot application:
    ```bash
@@ -45,7 +45,7 @@ TixSimulate is a full-stack application built with **Spring Boot** (backend) and
 ### Frontend Setup
 1. Navigate to the frontend directory:
    ```bash
-   cd frontend/ticketingsystemapp
+   cd FrontEnd/ticketingsystemapp
    ```
 2. Install dependencies:
    ```bash
